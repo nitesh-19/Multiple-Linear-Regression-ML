@@ -21,6 +21,8 @@ print(my_data)
 # def cost_function():
 cost_list = []
 m = len(my_data)
+w = 1
+b = 0
 
 
 def line_function(x, w, b):
@@ -41,7 +43,12 @@ def model():
     pass
 
 
-print(cost_function(1, 0))
+x1_coordinate = my_data.Year[len(my_data) - 1]
+y1_coordinate = line_function(x1_coordinate, w, b)
+x2_coordinate = my_data.Year[0]
+y2_coordinate = line_function(x2_coordinate, w, b)
+print(cost_function(w, b))
 my_data.plot.scatter(x="Year", y="Population", ylabel="Population in Millions")
-# plt.plot([558, 1323])
+
+plt.plot([x1_coordinate, x2_coordinate], [y1_coordinate, y2_coordinate])
 plt.show()
