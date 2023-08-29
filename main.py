@@ -17,17 +17,17 @@ my_data = pd.DataFrame(data=list_of_year,
 my_data["Population"] = list_of_population
 my_data["Population"] = round(my_data["Population"] * 10 ** -8)  # Converting population to small numbers
 print(my_data)
-# my_data["Year"] = round(my_data["Year"] - my_data["Year"][len(my_data)-1])  # Converting Year to small numbers
-# subtract_value = my_data["Year"][0] - my_data["Year"][len(my_data)-1]
-# print(subtract_value)
+my_data["Year"] = round(my_data["Year"] - my_data["Year"][len(my_data) - 1])  # Converting Year to small numbers
+subtract_value = my_data["Year"][0] - my_data["Year"][len(my_data) - 1]
+print(subtract_value)
 print(my_data)
 
 # def cost_function():
-cost_var = 1000
+cost_var = 10000
 m = len(my_data)
 w = 5
 b = 10
-alpha = 0.001
+alpha = 0.01
 models = []
 
 
@@ -44,10 +44,7 @@ def cost_function(w, b):
         temp_summation = int(y_cap - my_data.Population[i]) * int(y_cap - my_data.Population[i])
         summation += int(temp_summation)
         int(summation)
-    if summation > 10000000000:
-        summation *= 10000000000000000000
-        round(summation, 10000)
-        int(summation)
+
     cost = int(summation // (2 * m))
     cost_var = cost
     return cost
@@ -87,10 +84,10 @@ def model(w, b, alpha, cost_var):
     print(cost_var)
 
 
-while cost_var > 1:
+while cost_var > 8:
     gradient_descent()
 
-# my_data["Year"] = round(my_data["Year"] + subtract_value)
+my_data["Year"] = round(my_data["Year"] + subtract_value)
 
 x1_coordinate = my_data.Year[len(my_data) - 1]
 y1_coordinate = line_function(x1_coordinate, w, b)
