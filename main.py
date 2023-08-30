@@ -24,7 +24,7 @@ my_data["Year"] = round(my_data["Year"] - my_data["Year"][len(my_data) - 1])  # 
 cost_var = 1000
 m = len(my_data)
 w = 0
-b = 0
+b = 5
 alpha = 0.001
 models = []
 
@@ -71,8 +71,8 @@ def model(w, b, alpha, cost_var):
     models.append({"Slope": w, "Y-Intercept": b, "Alpha": alpha, "Cost": cost_var})
     with open("models_log.txt", "a") as file:
         file.write(str(models) + "\n")
-    print(models)
-    print(cost_var)
+    print(f"Model: {models}")
+    print(f"Cost: {cost_var}")
 
 
 while cost_var > 0.1:
@@ -84,7 +84,7 @@ x1_coordinate = my_data.Year[len(my_data) - 1]
 y1_coordinate = line_function(x1_coordinate, w, b)
 x2_coordinate = my_data.Year[0]
 y2_coordinate = line_function(x2_coordinate, w, b)
-print(w)
+print(f"Slope: {w}")
 my_data.plot.scatter(x="Year", y="Population", ylabel="Population in Millions")
 
 plt.plot([x1_coordinate, x2_coordinate], [y1_coordinate, y2_coordinate])
