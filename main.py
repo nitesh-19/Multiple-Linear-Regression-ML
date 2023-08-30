@@ -1,10 +1,11 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import math
 
 DATA_FILE_PATH = r".\data\world_population.csv"
 COUNTRY = "India"
 
-# Create Dataframe with only Year and Population
+# Create a Dataframe with only target Year and Population
 data = pd.read_csv(DATA_FILE_PATH)
 row_india = data.loc[data["Country/Territory"] == COUNTRY]
 
@@ -12,22 +13,19 @@ population_india = row_india.loc[:, "2022 Population":"1970 Population"].reset_i
 list_of_population = list(population_india.iloc[0])
 list_of_year = [int(index.replace(" Population", "")) for index in population_india.columns]
 
-my_data = pd.DataFrame(data=list_of_year,
-                       columns=["Year"])
+my_data = pd.DataFrame(data=list_of_year, columns=["Year"])
 my_data["Population"] = list_of_population
-my_data["Population"] = round(my_data["Population"] * 10 ** -8)  # Converting population to small numbers
+my_data["Population"] = round(
+    my_data["Population"] * 10 ** -8)  # Converting population to small numbers for easy calculation
 print(my_data)
 my_data["Year"] = round(my_data["Year"] - my_data["Year"][len(my_data) - 1])  # Converting Year to small numbers
-subtract_value = my_data["Year"][0] - my_data["Year"][len(my_data) - 1]
-print(subtract_value)
-print(my_data)
 
 # def cost_function():
-cost_var = 10000
+cost_var = 1000
 m = len(my_data)
-w = 5
-b = 10
-alpha = 0.01
+w = 0
+b = 0
+alpha = 0.001
 models = []
 
 
@@ -41,11 +39,8 @@ def cost_function(w, b):
     summation = 0
     for i in range(0, m):
         y_cap = line_function(my_data.Year[i], w, b)
-        temp_summation = int(y_cap - my_data.Population[i]) * int(y_cap - my_data.Population[i])
-        summation += int(temp_summation)
-        int(summation)
-
-    cost = int(summation // (2 * m))
+        summation += (y_cap - my_data.Population[i]) ** 2
+    cost = summation / (2 * m)
     cost_var = cost
     return cost
 
@@ -58,19 +53,15 @@ def gradient_descent():
     for i in range(0, m):
         y_cap = line_function(my_data.Year[i], w, b)
         summation_w += (y_cap - my_data.Population[i]) * my_data.Year[i]
-        int(summation_w)
     for i in range(0, m):
         y_cap = line_function(my_data.Year[i], w, b)
         summation_b += (y_cap - my_data.Population[i])
-        int(summation_b)
     summation_w /= m
-    int(summation_w)
     summation_b /= m
-    int(summation_b)
-    w_temp = int(w - alpha * summation_w)
-
-    b_temp = int(b - alpha * summation_b)
+    w_temp = w - alpha * summation_w
+    b_temp = b - alpha * summation_b
     w = w_temp
+
     b = b_temp
     cost_function(w, b)
 
@@ -84,10 +75,10 @@ def model(w, b, alpha, cost_var):
     print(cost_var)
 
 
-while cost_var > 8:
+while cost_var > 0.1:
     gradient_descent()
 
-my_data["Year"] = round(my_data["Year"] + subtract_value)
+# my_data["Year"] = round(my_data["Year"] + subtract_value)
 
 x1_coordinate = my_data.Year[len(my_data) - 1]
 y1_coordinate = line_function(x1_coordinate, w, b)
