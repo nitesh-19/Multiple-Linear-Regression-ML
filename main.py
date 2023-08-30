@@ -3,33 +3,37 @@ import matplotlib.pyplot as plt
 
 DATA_FILE_PATH = r".\data\world_population.csv"
 COUNTRY = "India"
+ALPHA = 0.001
+COST_LIMIT = 0.1
+ITERATIONS_LIMIT = 10000
+DECIMAL_PRECISION = 8
+cost_var = 1000
 
 # Create a Dataframe with only target Year and Population
 data = pd.read_csv(DATA_FILE_PATH)
-row_india = data.loc[data["Country/Territory"] == COUNTRY]
+row_india = data.loc[data["Country/Territory"] == COUNTRY].copy()
 
-population_india = row_india.loc[:, "2022 Population":"1970 Population"].reset_index(drop=True)
-list_of_population = list(population_india.iloc[0])
+population_india = row_india.loc[:, "2022 Population":"1970 Population"].reset_index(drop=True).copy()
+list_of_population = list(population_india.iloc[0]).copy()
 list_of_year = [int(index.replace(" Population", "")) for index in population_india.columns]
 
-my_data = pd.DataFrame(data=list_of_year, columns=["Year"])
-my_data["Population"] = list_of_population
+my_data = pd.DataFrame(data=list_of_year, columns=["Year"]).copy()
+my_data["Population"] = list_of_population.copy()
 
 # Converting population to small numbers for easy calculation
-my_data["Population"] = round(my_data["Population"] * 10 ** -8)
-print(my_data)
+my_data["Population"] = round(my_data["Population"].copy() * 10 ** -6)
+for i in range(0, len(my_data) - 1):
+    print(my_data.iloc[i][1])
+    my_data.iloc[i][1] = int(my_data.iloc[i][1].copy())
+    print(my_data.iloc[i][1])
 
 # Converting Year to small numbers for easy calculation
 my_data["Year"] = round(my_data["Year"] - my_data["Year"][len(my_data) - 1])
+print(my_data)
 
-cost_var = 1000
 m = len(my_data)
 w = 0
 b = 0
-ALPHA = 0.001
-ITERATIONS_LIMIT = 5000
-COST_LIMIT = 0.1
-DECIMAL_PRECISION = 8
 models = []
 
 
