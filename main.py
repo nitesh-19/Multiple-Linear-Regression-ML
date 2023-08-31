@@ -2,13 +2,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 DATA_FILE_PATH = r".\data\world_population.csv"
-COUNTRY = "India"
+COUNTRY = "China"
 ALPHA = 0.001
 COST_LIMIT = 1
 ITERATIONS_LIMIT = 100000
-DECIMAL_PRECISION = 16
-SCALING_FACTOR = 3
+DECIMAL_PRECISION = 4
+SCALE_POPULATION = 10 ** 6
 ITERATION_SAMPLING_VALUE = 500
+
 cost_var = 1000
 
 # Create a Dataframe with only target Year and Population
@@ -22,14 +23,17 @@ list_of_year = [int(index.replace(" Population", "")) for index in population_in
 my_data = pd.DataFrame(data=list_of_year, columns=["Year"]).copy()
 my_data["Population"] = list_of_population.copy()
 
-# Scaling data for easy calculation
-my_data["Population"] = round(my_data["Population"].copy() * 10 ** -SCALING_FACTOR)
-my_data["Year"] = round(my_data["Year"] * 10 ** -SCALING_FACTOR)
+# Converting population to small numbers for easy calculation
+my_data["Population"] = round(my_data["Population"].copy() / SCALE_POPULATION, DECIMAL_PRECISION)
+
+# Converting Year to small numbers for easy calculation
+offset_years = my_data["Year"][len(my_data) - 1]
+my_data["Year"] = round(my_data["Year"] - offset_years)
 print(my_data)
 
 m = len(my_data)
-w = 0
-b = 0
+w = 12
+b = 5
 models_dict = {}
 
 
@@ -94,12 +98,18 @@ def plot():
     y1_coordinate = line_function(x1_coordinate, w, b)
     x2_coordinate = my_data.Year[0]
     y2_coordinate = line_function(x2_coordinate, w, b)
-    print(f"Slope: {w}")
-    my_data.plot.scatter(x="Year", y="Population", ylabel="Population in Millions")
 
-    plt.plot([x1_coordinate, x2_coordinate], [y1_coordinate, y2_coordinate])
+    print(my_data)
+    print(f"Slope: {w}")
+    my_data["Population"] = round(my_data["Population"].copy() * SCALE_POPULATION, DECIMAL_PRECISION)
+    my_data["Year"] = round(my_data["Year"].copy() + offset_years, DECIMAL_PRECISION)
+
+    my_data.plot.scatter(x="Year", y="Population", ylabel="Population in Millions")
+    plt.plot([x1_coordinate + offset_years, x2_coordinate + offset_years],
+             [y1_coordinate * SCALE_POPULATION, y2_coordinate * SCALE_POPULATION])
     plt.show()
     model(w, b, ALPHA, cost_var, no_of_iterations)
+
 
 
 if __name__ == "__main__":
