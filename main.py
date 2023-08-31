@@ -4,9 +4,11 @@ import matplotlib.pyplot as plt
 DATA_FILE_PATH = r".\data\world_population.csv"
 COUNTRY = "India"
 ALPHA = 0.001
-COST_LIMIT = 0.1
-ITERATIONS_LIMIT = 10000
-DECIMAL_PRECISION = 8
+COST_LIMIT = 1
+ITERATIONS_LIMIT = 100000
+DECIMAL_PRECISION = 16
+SCALING_FACTOR = 3
+ITERATION_SAMPLING_VALUE = 500
 cost_var = 1000
 
 # Create a Dataframe with only target Year and Population
@@ -20,21 +22,15 @@ list_of_year = [int(index.replace(" Population", "")) for index in population_in
 my_data = pd.DataFrame(data=list_of_year, columns=["Year"]).copy()
 my_data["Population"] = list_of_population.copy()
 
-# Converting population to small numbers for easy calculation
-my_data["Population"] = round(my_data["Population"].copy() * 10 ** -6)
-for i in range(0, len(my_data) - 1):
-    print(my_data.iloc[i][1])
-    my_data.iloc[i][1] = int(my_data.iloc[i][1].copy())
-    print(my_data.iloc[i][1])
-
-# Converting Year to small numbers for easy calculation
-my_data["Year"] = round(my_data["Year"] - my_data["Year"][len(my_data) - 1])
+# Scaling data for easy calculation
+my_data["Population"] = round(my_data["Population"].copy() * 10 ** -SCALING_FACTOR)
+my_data["Year"] = round(my_data["Year"] * 10 ** -SCALING_FACTOR)
 print(my_data)
 
 m = len(my_data)
 w = 0
 b = 0
-models = []
+models_dict = {}
 
 
 def line_function(x, w, b):
@@ -69,7 +65,7 @@ def gradient_descent():
         summation_w = round(summation_w, DECIMAL_PRECISION)
     for i in range(0, m):
         y_cap = line_function(my_data.Year[i], w, b)
-        y_cap = round(y_cap, 4)
+        y_cap = round(y_cap, DECIMAL_PRECISION)
         summation_b += (y_cap - my_data.Population[i])
         summation_b = round(summation_b, DECIMAL_PRECISION)
     summation_w /= m
@@ -84,26 +80,40 @@ def gradient_descent():
 
 
 def model(w, b, alpha, cost_var, iterations):
-    global models
-    models.append({"Slope": w, "Y-Intercept": b, "Alpha": alpha, "Cost": cost_var, "Number of iterations": iterations})
+    global models_dict
+    models_dict = {"Slope": w, "Y-Intercept": b, "Alpha": alpha, "Cost": cost_var, "Number of iterations": iterations,
+                   "Country": COUNTRY}
     with open("models_log.txt", "a") as file:
-        file.write(str(models) + "\n")
-    print(f"Model: {models}")
+        file.write(str(models_dict) + "\n")
+    print(f"Model: {models_dict}")
     print(f"Cost: {cost_var}")
 
 
-no_of_iterations = 0
-while cost_var > COST_LIMIT and no_of_iterations < ITERATIONS_LIMIT:
-    gradient_descent()
-    no_of_iterations += 1
+def plot():
+    x1_coordinate = my_data.Year[len(my_data) - 1]
+    y1_coordinate = line_function(x1_coordinate, w, b)
+    x2_coordinate = my_data.Year[0]
+    y2_coordinate = line_function(x2_coordinate, w, b)
+    print(f"Slope: {w}")
+    my_data.plot.scatter(x="Year", y="Population", ylabel="Population in Millions")
 
-x1_coordinate = my_data.Year[len(my_data) - 1]
-y1_coordinate = line_function(x1_coordinate, w, b)
-x2_coordinate = my_data.Year[0]
-y2_coordinate = line_function(x2_coordinate, w, b)
-print(f"Slope: {w}")
-my_data.plot.scatter(x="Year", y="Population", ylabel="Population in Millions")
+    plt.plot([x1_coordinate, x2_coordinate], [y1_coordinate, y2_coordinate])
+    plt.show()
+    model(w, b, ALPHA, cost_var, no_of_iterations)
 
-plt.plot([x1_coordinate, x2_coordinate], [y1_coordinate, y2_coordinate])
-plt.show()
-model(w, b, ALPHA, cost_var, no_of_iterations)
+
+if __name__ == "__main__":
+    prev_cost = None
+    no_of_iterations = 0
+    while cost_var > COST_LIMIT and no_of_iterations < ITERATIONS_LIMIT:
+        gradient_descent()
+        no_of_iterations += 1
+        if no_of_iterations % ITERATION_SAMPLING_VALUE == 0:
+            print(f"{no_of_iterations}/{ITERATIONS_LIMIT} iterations completed")
+            print(cost_var)
+        if prev_cost == cost_var:
+            plot()
+            break
+        elif no_of_iterations == ITERATIONS_LIMIT - 1:
+            plot()
+        prev_cost = cost_var
