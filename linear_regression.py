@@ -98,7 +98,7 @@ class LinearRegression:
             y_cap = linear_equation(self.x, self.w, self.b)
             bracket = (y_cap - self.working_data.iloc[i][0]) / (2 * self.m)
             summation += bracket
-        self.cost = summation
+        self.cost = np.round(summation, 16)
 
     # for index in range(0, self.m):
     #     self.x = np.array([self.working_data.iloc[index][0]])
@@ -146,21 +146,28 @@ class LinearRegression:
 
     def run_trainer(self):
         self.get_training_data()
-        # self.length_of_x = len
         prev_cost = None
-        no_of_iterations = 0
-        while no_of_iterations < self.ITERATIONS_LIMIT:
-            self.gradient_descent()
-            no_of_iterations += 1
-            if no_of_iterations % self.ITERATION_SAMPLING_VALUE == 0:
-                print(f"{no_of_iterations}/{self.ITERATIONS_LIMIT} iterations completed")
-                print(self.cost)
-            if self.cost == prev_cost:
-                # plot()
-                break
-            elif no_of_iterations == self.ITERATIONS_LIMIT - 1:
-                # plot()
-                pass
-            prev_cost = self.cost
-        model(self.w, self.b, self.ALPHA, self.cost, no_of_iterations)
-        self.plot()
+        try:
+            no_of_iterations = 0
+            while no_of_iterations < self.ITERATIONS_LIMIT:
+                self.gradient_descent()
+                no_of_iterations += 1
+                if no_of_iterations % self.ITERATION_SAMPLING_VALUE == 0:
+                    print(f"{no_of_iterations}/{self.ITERATIONS_LIMIT} iterations completed")
+                    print(self.cost)
+                if prev_cost is not None:
+                    if self.cost < prev_cost:
+                        # plot()
+                        break
+                elif no_of_iterations == self.ITERATIONS_LIMIT - 1:
+                    # plot()
+                    pass
+                self.cost = self.cost
+                prev_cost = self.cost
+
+        except KeyboardInterrupt:
+            model(self.w, self.b, self.ALPHA, self.cost, no_of_iterations)
+            self.plot()
+        else:
+            model(self.w, self.b, self.ALPHA, self.cost, no_of_iterations)
+            self.plot()
