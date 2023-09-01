@@ -1,36 +1,27 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-DATA_FILE_PATH = r".\data\world_population.csv"
-COUNTRY = "India"
-ALPHA = 0.001
+
+ALPHA = 0.01
 COST_LIMIT = 1
-ITERATIONS_LIMIT = 100000
-DECIMAL_PRECISION = 6
-SCALE_POPULATION = 10 ** 3
+ITERATIONS_LIMIT = 10000
 ITERATION_SAMPLING_VALUE = 500
-
-cost_var = 1000
-
-# Create a Dataframe with only target Year and Population
+DATA_FILE_PATH = r".\data\Housing.csv"
 data = pd.read_csv(DATA_FILE_PATH)
-row_india = data.loc[data["Country/Territory"] == COUNTRY]
-
-population_india = row_india.loc[:, "2022 Population":"1970 Population"].reset_index(drop=True)
-list_of_population = list(population_india.iloc[0])
-list_of_year = [int(index.replace(" Population", "")) for index in population_india.columns]
-
-my_data = pd.DataFrame(data=list_of_year, columns=["Year"])
-my_data["Population"] = list_of_population.copy()
-my_data["Population"] = my_data["Population"] // SCALE_POPULATION
-print(my_data)
-
+# print(data)
+# list_price = data["price"]
+my_data = pd.DataFrame(columns=["Price", "Area"])
+my_data["Price"] = data.price / 100000
+my_data["Area"] = data.area / 1000
 m = len(my_data)
 w = 12
 b = 5
+cost_var = 1000000
+no_of_iterations = 0
 
 
 def line_function(x, w, b):
+
     y = w * x + b
     return y
 
@@ -39,8 +30,9 @@ def cost_function(w, b):
     global cost_var
     summation = 0
     for i in range(0, m):
-        y_cap = line_function(my_data.Year[i], w, b)
-        bracket = ((y_cap - my_data.Population[i]) ** 2) / (2 * m)
+        y_cap = line_function(my_data.Area[i], w, b)
+        bracket = ((y_cap - my_data.Price[i]) ** 2) / (2 * m)
+        bracket = ((y_cap - my_data.Price[i]) ** 2) / (2 * m)
         summation += bracket
     cost_var = summation
 
@@ -52,13 +44,13 @@ def gradient_descent():
     summation_w = 0
     summation_b = 0
     for i in range(0, m):
-        y_cap_1 = line_function(my_data.Year[i], w, b)
-        bracket_1 = ((y_cap_1 - my_data.Population[i]) * my_data.Year[i]) / m
+        y_cap_1 = line_function(my_data.Area[i], w, b)
+        bracket_1 = ((y_cap_1 - my_data.Price[i]) * my_data.Area[i]) / m
         summation_w += bracket_1
 
     for i in range(0, m):
-        y_cap = line_function(my_data.Year[i], w, b)
-        bracket = (y_cap - my_data.Population[i]) / m
+        y_cap = line_function(my_data.Area[i], w, b)
+        bracket = (y_cap - my_data.Price[i]) / m
         summation_b += bracket
 
     w_temp = w - ALPHA * summation_w
@@ -72,7 +64,7 @@ def gradient_descent():
 
 def model(w, b, alpha, cost_var, iterations):
     models_dict = {"Slope": w, "Y-Intercept": b, "Alpha": alpha, "Cost": cost_var, "Number of iterations": iterations,
-                   "Country": COUNTRY}
+                   }
     with open("models_log.txt", "a") as file:
         file.write(str(models_dict) + "\n")
     print(f"Model: {models_dict}")
@@ -85,16 +77,16 @@ def plot():
     global cost_var
     global no_of_iterations
 
-    x1_coordinate = my_data.Year[len(my_data) - 1]
+    x1_coordinate = my_data.Area[len(my_data) - 1]
     y1_coordinate = line_function(x1_coordinate, w, b)
     print(w, b)
-    x2_coordinate = my_data.Year[0]
+    x2_coordinate = my_data.Area[0]
     y2_coordinate = line_function(x2_coordinate, w, b)
 
     print(my_data)
     print(f"Slope: {w}")
 
-    my_data.plot.scatter(x="Year", y="Population", ylabel=f"Population of {COUNTRY}")
+    my_data.plot.scatter(x="Area", y="Price")
     plt.plot([x1_coordinate, x2_coordinate],
              [y1_coordinate, y2_coordinate])
     plt.show()
