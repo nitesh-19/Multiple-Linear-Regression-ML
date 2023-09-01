@@ -116,7 +116,7 @@ class LinearRegression:
             summation_w /= self.m
             summation_b /= self.m
             temp_w = self.w[j] - (self.ALPHA * summation_w)
-            temp_b = self.b - (self.ALPHA * summation_w)
+            temp_b = self.b - (self.ALPHA * summation_b)
             self.w[j] = temp_w
             self.b = temp_b
             self.cost_function(w=self.w, b=self.b)
@@ -155,9 +155,9 @@ class LinearRegression:
             if no_of_iterations % self.ITERATION_SAMPLING_VALUE == 0:
                 print(f"{no_of_iterations}/{self.ITERATIONS_LIMIT} iterations completed")
                 print(self.cost)
-            # if self.cost > 0:
-            #     # plot()
-            #     break
+            if self.cost == prev_cost:
+                # plot()
+                break
             elif no_of_iterations == self.ITERATIONS_LIMIT - 1:
                 # plot()
                 pass

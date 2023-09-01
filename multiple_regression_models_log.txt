@@ -1,0 +1,20 @@
+{'Slope': array([0., 0.]), 'Y-Intercept': 0.0, 'Alpha': 0.001, 'Cost': array([-0.15896732]), 'Number of iterations': 2}
+{'Slope': array([0., 0.]), 'Y-Intercept': 0.0, 'Alpha': 0.001, 'Cost': array([-0.15896732]), 'Number of iterations': 2}
+{'Slope': array([0.00123673, 0.00182495]), 'Y-Intercept': array([0.00306168]), 'Alpha': 0.005, 'Cost': array([-0.15678895]), 'Number of iterations': 2}
+{'Slope': array([0.00123673, 0.00182495]), 'Y-Intercept': array([0.00306168]), 'Alpha': 0.005, 'Cost': array([-0.15678895]), 'Number of iterations': 2}
+{'Slope': array([0.00062014, 0.0009152 ]), 'Y-Intercept': array([0.00153534]), 'Alpha': 0.005, 'Cost': array([-0.15787493]), 'Number of iterations': 1}
+{'Slope': array([0.09332673, 0.13054003]), 'Y-Intercept': array([0.22386675]), 'Alpha': 0.002, 'Cost': array([5.77156236e-05]), 'Number of iterations': 820}
+{'Slope': array([0.02895482, 0.03744471]), 'Y-Intercept': array([0.29026628]), 'Alpha': 0.001, 'Cost': array([2.10831162e-05]), 'Number of iterations': 823}
+{'Slope': array([0.00887184, 0.01072979]), 'Y-Intercept': array([0.30986791]), 'Alpha': 0.001, 'Cost': array([2.82383761e-05]), 'Number of iterations': 329}
+{'Slope': array([0.02100703]), 'Y-Intercept': array([0.31127331]), 'Alpha': 0.001, 'Cost': array([8.76274603e-06]), 'Number of iterations': 781}
+{'Slope': array([7.94776352e-05]), 'Y-Intercept': array([0.29034576]), 'Alpha': 0.001, 'Cost': array([0.0244775]), 'Number of iterations': 1}
+{'Slope': array([7.94776352e-05]), 'Y-Intercept': array([0.29034576]), 'Alpha': 0.001, 'Cost': array([0.0244775]), 'Number of iterations': 1}
+{'Slope': array([0.1947156]), 'Y-Intercept': array([0.1947156]), 'Alpha': 0.001, 'Cost': array([0.00015597]), 'Number of iterations': 1731}
+{'Slope': array([0.90497442]), 'Y-Intercept': array([0.90497442]), 'Alpha': 5e-07, 'Cost': array([0.02625028]), 'Number of iterations': 391}
+{'Slope': array([0.90497442]), 'Y-Intercept': array([0.90497442]), 'Alpha': 5e-07, 'Cost': array([0.02625028]), 'Number of iterations': 391}
+{'Slope': array([0.90497442]), 'Y-Intercept': array([0.90497442]), 'Alpha': 5e-07, 'Cost': array([0.02625028]), 'Number of iterations': 391}
+{'Slope': array([0.90497442]), 'Y-Intercept': array([0.90497442]), 'Alpha': 5e-07, 'Cost': array([0.02625028]), 'Number of iterations': 391}
+{'Slope': array([0.9034038]), 'Y-Intercept': array([1.80837822]), 'Alpha': 5e-07, 'Cost': array([0.47090717]), 'Number of iterations': 391}
+{'Slope': array([0.90569648]), 'Y-Intercept': array([0.07707051]), 'Alpha': 5e-07, 'Cost': array([-0.38446289]), 'Number of iterations': 391}
+{'Slope': array([2.28173285]), 'Y-Intercept': array([0.19395967]), 'Alpha': 5e-07, 'Cost': array([5.8461885]), 'Number of iterations': 1000}
+{'Slope': array([55.08904232]), 'Y-Intercept': array([-84.98366284]), 'Alpha': 0.005, 'Cost': array([200.1243978]), 'Number of iterations': 1000}
