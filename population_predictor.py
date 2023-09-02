@@ -1,10 +1,8 @@
 from linear_regression import LinearRegression
 
-trainer = LinearRegression(ITERATION_SAMPLING_VALUE=5, ALPHA=0.005, ITERATIONS_LIMIT=100000)
-trainer.DATA_PATH = r".\data\Fish.csv"
-trainer.x_index_list = [5]
-trainer.y_index = 1
-trainer.should_scale_data = False
-
-trainer.run_trainer()
+data_path = r".\data\Housing.csv"
+feature_columns = [1, 2]
+target_column = 0
+trainer = LinearRegression(DATA_PATH=data_path, feature_columns_index=feature_columns,
+                           target_column_index=target_column, ALPHA=0.8)
 
