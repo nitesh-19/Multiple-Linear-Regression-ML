@@ -1,0 +1,2 @@
+{'Slope': '[4.23778540e+02, 7.39565853e+05]', 'Y-Intercept': '[391125.85367147]', 'Alpha': 0.8, 'Cost': '[0.02023302]', 'Number of iterations': 6073}
+{'Slope': '[4.23750276e+02, 7.39035347e+05]', 'Y-Intercept': '[392864.16710735]', 'Alpha': 0.8, 'Cost': '[0.02023377]', 'Number of iterations': 615}
