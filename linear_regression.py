@@ -49,7 +49,7 @@ class LinearRegression:
         if response == "y":
             self.create_test_set = False
             self.get_last_model()
-            input("Press any key to start training: ")
+            input("Press any key to start training: \n")
 
         elif response == "n":
             print("Setting weights to default and starting the trainer.")
@@ -65,7 +65,7 @@ class LinearRegression:
         self.b = np.array(eval(parameter_dict["Y - Intercept"]))
         self.no_of_iterations = parameter_dict["Number of iterations"]
         # self.ALPHA = parameter_dict["Alpha"]
-        print(f"Scaled w = {self.w}, b = {self.b}, Alpha = {self.ALPHA}")
+        print(f"\n(Scaled) w = {self.w}, b = {self.b}, Alpha = {self.ALPHA}\n")
 
     def save_model(self, file_path, w, b, alpha, cost_var, iterations):
         models_dict = {"Dataset": self.DATA_PATH, "Slope": str(w.tolist()), "Y - Intercept": str(b.tolist()),
@@ -75,13 +75,10 @@ class LinearRegression:
                        }
         with open(file_path, "a") as file:
             file.write(str(models_dict) + "\n")
-        print(f"Model: {models_dict}")
+        print(f"\nModel: {models_dict}")
 
     def test_set_creator(self, data, percent_of_data=20):
         length_of_data = len(data)
-
-        # list_of_random_index =
-
         list_of_random_index = sample(range(0, length_of_data), round(length_of_data * percent_of_data / 100))
         test_set = pd.DataFrame(data=data, index=list_of_random_index)
         data.drop(index=list_of_random_index, inplace=True)
@@ -184,7 +181,7 @@ class LinearRegression:
             self.working_data.plot.scatter(x=self.columns[i], y=self.columns[-1])
 
             plt.plot(x_coordinates[i], y_coordinates[i])
-        print(f"Slope: {self.w}")
+        print(f"Weights (w): {self.w.tolist()}")
 
         plt.show()
 
@@ -200,14 +197,17 @@ class LinearRegression:
                     print(f"Current Cost: {self.cost}")
                 if prev_cost is not None:
                     if round(self.cost[0], 8) == round(prev_cost[0], 8):
+                        print("\nConvergence achieved!\n")
                         break
                 prev_cost = self.cost
 
         except KeyboardInterrupt:
             self.save_model(file_path="partially_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
                             cost_var=self.cost, iterations=self.no_of_iterations)
+            print("\nModel training interrupted. Partial model saved to .csv file.\n")
             self.plot()
         else:
             self.plot()
             self.save_model(file_path="fully_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
                             cost_var=self.cost, iterations=self.no_of_iterations)
+            print("\nModel training completed. Model saved to .csv file.\n")
