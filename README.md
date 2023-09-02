@@ -8,7 +8,7 @@ Basic Machine Learning Predictor using Multiple Linear Regression.
 
 ### Todo:
 
-Update documentation,
+Update documentation.
 
 ## Screenshots
 
