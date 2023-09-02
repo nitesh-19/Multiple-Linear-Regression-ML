@@ -1,0 +1,6 @@
+{'Slope': '[0.23022676, 0.16398786]', 'Y-Intercept': '[0.20561599]', 'Alpha': 0.01, 'Cost': '[0.02095975]', 'Number of iterations': 2757}
+{'Slope': '[0.47152124, 0.29711181]', 'Y-Intercept': '[0.06192085]', 'Alpha': 0.1, 'Cost': '[0.02036435]', 'Number of iterations': 3792}
+{'Slope': '[0.51617768, 0.33355711]', 'Y-Intercept': '[0.02944973]', 'Alpha': 0.3, 'Cost': '[0.02023315]', 'Number of iterations': 5238}
+{'Slope': '[0.51618183, 0.3336355, ]', 'Y-Intercept': '[0.02940943]', 'Alpha': 0.5, 'Cost': '[0.02023303]', 'Number of iterations': 5701}
+{'Slope': '[0.51618139, 0.33363869]', 'Y-Intercept': '[0.02940798]', 'Alpha': 0.8, 'Cost': '[0.02023302]', 'Number of iterations': 6021}
+{'Slope': '[0.51618138, 0.33363873]', 'Y-Intercept': '[0.02940796]', 'Alpha': 0.8, 'Cost': '[0.02023302]', 'Number of iterations': 6071}
