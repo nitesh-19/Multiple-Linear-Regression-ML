@@ -177,8 +177,6 @@ class LinearRegression:
         for i in range(0, self.length_of_x):
             x1_coordinate = self.working_data[self.columns[i]].min()
             y1_coordinate = linear_equation(x1_coordinate, self.w[i], self.b)
-
-            print(self.w, self.b)
             x2_coordinate = self.working_data[self.columns[i]].max()
             y2_coordinate = linear_equation(x2_coordinate, self.w[i], self.b)
             x_coordinates.append((x1_coordinate, x2_coordinate))
@@ -186,7 +184,6 @@ class LinearRegression:
             self.working_data.plot.scatter(x=self.columns[i], y=self.columns[-1])
 
             plt.plot(x_coordinates[i], y_coordinates[i])
-        print(self.working_data)
         print(f"Slope: {self.w}")
 
         plt.show()
@@ -201,22 +198,17 @@ class LinearRegression:
                 self.no_of_iterations += 1
                 if self.no_of_iterations % self.ITERATION_SAMPLING_VALUE == 0:
                     print(f"{self.no_of_iterations}/{self.ITERATIONS_LIMIT} iterations completed")
-                    print(self.cost)
+                    print(f"Current Cost: {self.cost}")
                 if prev_cost is not None:
                     if round(self.cost[0], 8) == round(prev_cost[0], 8):
-                        # plot()
                         break
-                elif self.no_of_iterations == self.ITERATIONS_LIMIT - 1:
-                    # plot()
-                    pass
-                self.cost = self.cost
                 prev_cost = self.cost
 
         except KeyboardInterrupt:
             self.save_model(file_path="partially_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
-                       cost_var=self.cost, iterations=self.no_of_iterations)
+                            cost_var=self.cost, iterations=self.no_of_iterations)
             self.plot()
         else:
             self.plot()
             self.save_model(file_path="fully_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
-                       cost_var=self.cost, iterations=self.no_of_iterations)
+                            cost_var=self.cost, iterations=self.no_of_iterations)
