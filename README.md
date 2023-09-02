@@ -14,9 +14,9 @@ Update documentation,
 
 <br>
 
-![](Screenshots/Screenshot 2023-09-03 000707.png)
+![](Screenshots/Screenshot_1.png)
 
-![](Screenshots/Screenshot 2023-09-03 003920.png)
+![](Screenshots/Screenshot_2.png)
 
 ![](Plots/Figure_1.png)
 <br>
