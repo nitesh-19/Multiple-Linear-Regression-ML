@@ -4,20 +4,25 @@ import matplotlib.pyplot as plt
 from random import sample
 
 
+# TODO - Test the testset creator
+# TODO - Create separate csv for test and trainging data
+
+
 def linear_equation(x, w, b):
     return np.dot(x, w) + b
 
 
-def model(w, b, alpha, cost_var, iterations):
+def save_model(file_path, w, b, alpha, cost_var, iterations):
     models_dict = {"Slope": w, "Y-Intercept": b, "Alpha": alpha, "Cost": cost_var, "Number of iterations": iterations,
                    }
-    with open("multiple_regression_models_log.txt", "a") as file:
+    with open(file_path, "a") as file:
         file.write(str(models_dict) + "\n")
     print(f"Model: {models_dict}")
 
 
 class LinearRegression:
-    def __init__(self, ALPHA=0.001, ITERATIONS_LIMIT=10000, ITERATION_SAMPLING_VALUE=500, create_test_set=False):
+    def __init__(self, ALPHA=0.001, ITERATIONS_LIMIT=10000, ITERATION_SAMPLING_VALUE=500, create_test_set=False,
+                 should_resume_training=True):
         self.length_of_x = None
         self.ALPHA = ALPHA
         self.ITERATIONS_LIMIT = ITERATIONS_LIMIT
@@ -31,11 +36,23 @@ class LinearRegression:
         self.test_set = None
         self.w = None
         self.x = None
-        self.cost = None
         self.b = 0
+        self.cost = None
         self.m = None
         self.should_scale_data = True
         self.scale_factors = []
+        self.start_prompt()
+
+    def start_prompt(self):
+        print("Do you want to resume training the last interrupted model?")
+        response = input("Press 'y' to load the last model weights or press 'n' to set the weights to zero.: ")
+        if response == "y":
+            pass
+        elif response == "n":
+            pass
+        else:
+            print("Invalid Input.")
+            self.start_prompt()
 
     def test_set_creator(self, data, percent_of_data=20):
         length_of_data = len(data)
@@ -176,8 +193,10 @@ class LinearRegression:
                 prev_cost = self.cost
 
         except KeyboardInterrupt:
-            model(self.w, self.b, self.ALPHA, self.cost, no_of_iterations)
+            save_model(file_path="partially_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
+                       cost_var=self.cost, iterations=no_of_iterations)
             self.plot()
         else:
-            model(self.w, self.b, self.ALPHA, self.cost, no_of_iterations)
             self.plot()
+            save_model(file_path="fully_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
+                       cost_var=self.cost, iterations=no_of_iterations)
