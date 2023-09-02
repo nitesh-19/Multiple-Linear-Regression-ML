@@ -13,7 +13,8 @@ def linear_equation(x, w, b):
 
 
 def save_model(file_path, w, b, alpha, cost_var, iterations):
-    models_dict = {"Slope": w, "Y-Intercept": b, "Alpha": alpha, "Cost": cost_var, "Number of iterations": iterations,
+    models_dict = {"Slope": str(w).replace(" ", ", "), "Y-Intercept": str(b), "Alpha": alpha, "Cost": str(cost_var),
+                   "Number of iterations": iterations,
                    }
     with open(file_path, "a") as file:
         file.write(str(models_dict) + "\n")
@@ -21,38 +22,52 @@ def save_model(file_path, w, b, alpha, cost_var, iterations):
 
 
 class LinearRegression:
-    def __init__(self, ALPHA=0.001, ITERATIONS_LIMIT=10000, ITERATION_SAMPLING_VALUE=500, create_test_set=False,
-                 should_resume_training=True):
+    def __init__(self, DATA_PATH, feature_columns_index, target_column_index, ALPHA=0.001, ITERATIONS_LIMIT=10000,
+                 ITERATION_SAMPLING_VALUE=5, create_test_set=False, should_scale_data=True):
         self.length_of_x = None
-        self.ALPHA = ALPHA
-        self.ITERATIONS_LIMIT = ITERATIONS_LIMIT
-        self.ITERATION_SAMPLING_VALUE = ITERATION_SAMPLING_VALUE
         self.create_test_set = create_test_set
         self.working_data = None
-        self.DATA_PATH = None
-        self.x_index_list = None
+        self.DATA_PATH = DATA_PATH
+        self.x_index_list = np.array(feature_columns_index)
         self.columns = None
-        self.y_index = None
+        self.y_index = target_column_index
         self.test_set = None
         self.w = None
         self.x = None
         self.b = 0
         self.cost = None
         self.m = None
-        self.should_scale_data = True
+        self.should_scale_data = should_scale_data
         self.scale_factors = []
+        self.no_of_iterations = 0
+        self.ITERATIONS_LIMIT = ITERATIONS_LIMIT
+        self.ITERATION_SAMPLING_VALUE = ITERATION_SAMPLING_VALUE
+        self.ALPHA = ALPHA
         self.start_prompt()
+        self.run_trainer()
 
     def start_prompt(self):
         print("Do you want to resume training the last interrupted model?")
-        response = input("Press 'y' to load the last model weights or press 'n' to set the weights to zero.: ")
+        response = input("Press 'y' to load the last model weights or press 'n' to set the weights to default: ")
         if response == "y":
-            pass
+            self.get_last_model()
+            input("Press any key to start training: ")
+
         elif response == "n":
-            pass
+            print("Setting weights to default and starting the trainer.")
         else:
             print("Invalid Input.")
             self.start_prompt()
+
+    def get_last_model(self):
+        with open("partially_trained_models.txt", "r") as file:
+            lines = file.readlines()
+            parameter_dict = eval(lines[-1])
+        self.w = np.array(eval(parameter_dict["Slope"]))
+        self.b = np.array(eval(parameter_dict["Y-Intercept"]))
+        self.no_of_iterations = parameter_dict["Number of iterations"]
+        # self.ALPHA = parameter_dict["Alpha"]
+        print(f"Scaled w = {self.w}, b = {self.b}, Alpha = {self.ALPHA}")
 
     def test_set_creator(self, data, percent_of_data=20):
         length_of_data = len(data)
@@ -172,21 +187,21 @@ class LinearRegression:
         plt.show()
 
     def run_trainer(self):
+
         self.get_training_data()
         prev_cost = None
         try:
-            no_of_iterations = 0
-            while no_of_iterations < self.ITERATIONS_LIMIT:
+            while self.no_of_iterations < self.ITERATIONS_LIMIT:
                 self.gradient_descent()
-                no_of_iterations += 1
-                if no_of_iterations % self.ITERATION_SAMPLING_VALUE == 0:
-                    print(f"{no_of_iterations}/{self.ITERATIONS_LIMIT} iterations completed")
+                self.no_of_iterations += 1
+                if self.no_of_iterations % self.ITERATION_SAMPLING_VALUE == 0:
+                    print(f"{self.no_of_iterations}/{self.ITERATIONS_LIMIT} iterations completed")
                     print(self.cost)
-                # if prev_cost is not None:
-                #     if self.cost < prev_cost:
-                #         # plot()
-                #         break
-                elif no_of_iterations == self.ITERATIONS_LIMIT - 1:
+                if prev_cost is not None:
+                    if round(self.cost[0], 8) == round(prev_cost[0], 8):
+                        # plot()
+                        break
+                elif self.no_of_iterations == self.ITERATIONS_LIMIT - 1:
                     # plot()
                     pass
                 self.cost = self.cost
@@ -194,9 +209,9 @@ class LinearRegression:
 
         except KeyboardInterrupt:
             save_model(file_path="partially_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
-                       cost_var=self.cost, iterations=no_of_iterations)
+                       cost_var=self.cost, iterations=self.no_of_iterations)
             self.plot()
         else:
             self.plot()
             save_model(file_path="fully_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
-                       cost_var=self.cost, iterations=no_of_iterations)
+                       cost_var=self.cost, iterations=self.no_of_iterations)
