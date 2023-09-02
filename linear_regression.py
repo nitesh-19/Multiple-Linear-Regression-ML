@@ -139,7 +139,7 @@ class LinearRegression:
 
         return self.working_data
 
-    def cost_function(self, w, b):
+    def cost_function(self):
         summation = 0
         for i in range(0, self.m):
             self.create_array(self.x, i)
@@ -163,7 +163,7 @@ class LinearRegression:
             temp_b = self.b - (self.ALPHA * summation_b)
             self.w[j] = temp_w
             self.b = temp_b
-            self.cost_function(w=self.w, b=self.b)
+            self.cost_function()
 
     def create_array(self, char, i=0):
         if char is self.x:
@@ -189,7 +189,6 @@ class LinearRegression:
         plt.show()
 
     def run_trainer(self):
-
         self.get_training_data()
         prev_cost = None
         try:
