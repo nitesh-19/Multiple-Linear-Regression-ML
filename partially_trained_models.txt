@@ -1,6 +1,9 @@
-{'Slope': '[0.23022676, 0.16398786]', 'Y-Intercept': '[0.20561599]', 'Alpha': 0.01, 'Cost': '[0.02095975]', 'Number of iterations': 2757}
-{'Slope': '[0.47152124, 0.29711181]', 'Y-Intercept': '[0.06192085]', 'Alpha': 0.1, 'Cost': '[0.02036435]', 'Number of iterations': 3792}
-{'Slope': '[0.51617768, 0.33355711]', 'Y-Intercept': '[0.02944973]', 'Alpha': 0.3, 'Cost': '[0.02023315]', 'Number of iterations': 5238}
-{'Slope': '[0.51618183, 0.3336355, ]', 'Y-Intercept': '[0.02940943]', 'Alpha': 0.5, 'Cost': '[0.02023303]', 'Number of iterations': 5701}
-{'Slope': '[0.51618139, 0.33363869]', 'Y-Intercept': '[0.02940798]', 'Alpha': 0.8, 'Cost': '[0.02023302]', 'Number of iterations': 6021}
-{'Slope': '[0.51618138, 0.33363873]', 'Y-Intercept': '[0.02940796]', 'Alpha': 0.8, 'Cost': '[0.02023302]', 'Number of iterations': 6071}
+{'Slope': '[0.21701144,0.25732982]', 'Y-Intercept': '[0.00873405]', 'Alpha': 0.3, 'Cost': '[-0.11146751]', 'Number of iterations': 31}
+{'Slope': '[0.32746214,0.50350796]', 'Y-Intercept': '[-0.18603257]', 'Alpha': 0.1, 'Cost': '[-0.11859255]', 'Number of iterations': 303}
+{'Slope': '[0.08549958,0.09553888]', 'Y - Intercept': '[0.16502955]', 'Alpha': 0.1, 'Cost': '[-0.10990837]', 'Number of iterations': 14}
+{'Slope': '[0.24248027,0.31253638]', 'Y - Intercept': '[-0.03120849]', 'Alpha': 0.1, 'Cost': '[-0.112563]', 'Number of iterations': 119}
+{'Slope': '[0.07314036,0.87332447]', 'Y - Intercept': '[-0.26531554]', 'Alpha': 0.1, 'Cost': '[-0.11153703]', 'Number of iterations': 2349}
+{'Slope': '[0.16244136,0.06388979,0.02068287,0.34869898]', 'Y - Intercept': '[-0.00657673]', 'Alpha': 0.1, 'Cost': '[-0.20142044]', 'Number of iterations': 190}
+{'Slope': '[0.24831311,0.1192956,0.03432648,0.37310362]', 'Y - Intercept': '[-0.09742927]', 'Alpha': 0.5, 'Cost': '[-0.20385617]', 'Number of iterations': 246}
+{'Slope': '[0.25105964,0.13019335,0.03412829,0.38090746]', 'Y - Intercept': '[-0.10579277]', 'Alpha': 0.5, 'Cost': '[-0.19972549]', 'Number of iterations': 256}
+{'Slope': '[0.25268828,0.13433623,0.03431494,0.37864606]', 'Y - Intercept': '[-0.10869482]', 'Alpha': 0.5, 'Cost': '[-0.2021413]', 'Number of iterations': 260}
