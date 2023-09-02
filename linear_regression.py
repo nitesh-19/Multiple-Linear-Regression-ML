@@ -18,16 +18,6 @@ def predict_with_model(x):
     return linear_equation(x, w, b)
 
 
-def save_model(file_path, w, b, alpha, cost_var, iterations):
-    models_dict = {"Slope": (str(w).replace(" ", ",")).replace("[,", "["), "Y - Intercept": str(b), "Alpha": alpha,
-                   "Cost": str(cost_var),
-                   "Number of iterations": iterations,
-                   }
-    with open(file_path, "a") as file:
-        file.write(str(models_dict) + "\n")
-    print(f"Model: {models_dict}")
-
-
 class LinearRegression:
     def __init__(self, DATA_PATH, feature_columns_index, target_column_index, ALPHA=0.001, ITERATIONS_LIMIT=10000,
                  ITERATION_SAMPLING_VALUE=5, create_test_set=False, should_scale_data=True):
@@ -76,6 +66,16 @@ class LinearRegression:
         self.no_of_iterations = parameter_dict["Number of iterations"]
         # self.ALPHA = parameter_dict["Alpha"]
         print(f"Scaled w = {self.w}, b = {self.b}, Alpha = {self.ALPHA}")
+
+    def save_model(self, file_path, w, b, alpha, cost_var, iterations):
+        models_dict = {"Dataset": self.DATA_PATH, "Slope": str(w.tolist()), "Y - Intercept": str(b.tolist()),
+                       "Alpha": alpha,
+                       "Cost": str(cost_var),
+                       "Number of iterations": iterations,
+                       }
+        with open(file_path, "a") as file:
+            file.write(str(models_dict) + "\n")
+        print(f"Model: {models_dict}")
 
     def test_set_creator(self, data, percent_of_data=20):
         length_of_data = len(data)
@@ -213,10 +213,10 @@ class LinearRegression:
                 prev_cost = self.cost
 
         except KeyboardInterrupt:
-            save_model(file_path="partially_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
+            self.save_model(file_path="partially_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
                        cost_var=self.cost, iterations=self.no_of_iterations)
             self.plot()
         else:
             self.plot()
-            save_model(file_path="fully_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
+            self.save_model(file_path="fully_trained_models.txt", w=self.w, b=self.b, alpha=self.ALPHA,
                        cost_var=self.cost, iterations=self.no_of_iterations)
