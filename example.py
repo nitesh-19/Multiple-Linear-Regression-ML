@@ -11,7 +11,7 @@ trainer = LinearRegression(DATA_PATH=data_path, feature_columns_index=feature_co
                            target_column_index=target_column, ALPHA=0.5, create_test_set=False, ITERATIONS_LIMIT=10000)
 
 
-### PREDICT FROM THE MODEL ###
+### PREDICT FROM THE TRAINED MODEL ###
 parameters = [53, 33.25, 0, 0]  # Features from the test dataset needed to predict the target.
 target_prediction = predict_with_model(
     parameters)  # Predict the target by extracting the weights from the last saved model.
