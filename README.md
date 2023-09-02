@@ -1,8 +1,9 @@
 # Multiple-Linear-Regression
 
-Implementation of Multiple Linear Regression.<br>
-Use it to train your own model on any vertical dataset.<br>
-Predict the values by supplying the necessary parameters.<br>
+Basic Machine Learning Predictor using Multiple Linear Regression.
+1. Supply a vertical dataset.<br>
+2. Use the 'LinearRegression' class to train your own model on the dataset.<br>
+3. Run the trained model using 'predict_with_model()' function and predict the target.<br>
 <br>
 
 ### Todo:
