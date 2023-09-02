@@ -35,6 +35,7 @@ class LinearRegression:
         self.b = 0
         self.m = None
         self.should_scale_data = True
+        self.scale_factors = []
 
     def test_set_creator(self, data, percent_of_data=20):
         length_of_data = len(data)
@@ -53,10 +54,18 @@ class LinearRegression:
         self.test_set = test_set
         return data
 
-    def scale_data(self):
-        for i in range(0, len(self.columns)):
-            self.working_data[self.columns[i]] = self.working_data[self.columns[i]] / self.working_data[
-                self.columns[i]].max()
+    def scale_data(self, unscale=False):
+        if not unscale:
+            for i in range(0, len(self.columns)):
+                self.scale_factors.append(self.working_data[self.columns[i]].max())
+                self.working_data[self.columns[i]] = self.working_data[self.columns[i]] / self.working_data[
+                    self.columns[i]].max()
+        elif unscale:
+            for i in range(0, len(self.columns)):
+                self.working_data[self.columns[i]] = self.working_data[self.columns[i]] * self.scale_factors[i]
+            self.b = self.b * self.scale_factors[-1]
+            for index in range(0, len(self.columns) - 1):
+                self.w[index] = self.w[index] * self.scale_factors[-1] / self.scale_factors[index]
 
     def get_training_data(self):
         if self.DATA_PATH is None:
@@ -83,7 +92,9 @@ class LinearRegression:
             if self.create_test_set is True:
                 self.working_data = self.test_set_creator(self.working_data)
         self.length_of_x = len(x_values)
-        self.w = np.zeros(self.length_of_x)
+
+        if self.w is None:
+            self.w = np.zeros(self.length_of_x)
         if self.should_scale_data is True:
             self.scale_data()
 
@@ -99,10 +110,6 @@ class LinearRegression:
             bracket = (y_cap - self.working_data.iloc[i][0]) / (2 * self.m)
             summation += bracket
         self.cost = np.round(summation, 16)
-
-    # for index in range(0, self.m):
-    #     self.x = np.array([self.working_data.iloc[index][0]])
-    #     print(self.x)
 
     def gradient_descent(self):
         for j in range(0, self.length_of_x):
@@ -124,24 +131,27 @@ class LinearRegression:
     def create_array(self, char, i=0):
         if char is self.x:
             self.x = np.array([self.working_data.iloc[i][0:-1]])
-        if char is self.w:
-            # return np.array([self.w)
-            pass
 
     def plot(self):
+        self.scale_data(unscale=True)
+        x_coordinates = []
+        y_coordinates = []
 
-        x1_coordinate = self.working_data[self.columns[0]].min()
-        y1_coordinate = linear_equation(x1_coordinate, self.w, self.b)
-        print(self.w, self.b)
-        x2_coordinate = self.working_data[self.columns[0]].max()
-        y2_coordinate = linear_equation(x2_coordinate, self.w, self.b)
+        for i in range(0, self.length_of_x):
+            x1_coordinate = self.working_data[self.columns[i]].min()
+            y1_coordinate = linear_equation(x1_coordinate, self.w[i], self.b)
 
+            print(self.w, self.b)
+            x2_coordinate = self.working_data[self.columns[i]].max()
+            y2_coordinate = linear_equation(x2_coordinate, self.w[i], self.b)
+            x_coordinates.append((x1_coordinate, x2_coordinate))
+            y_coordinates.append((y1_coordinate, y2_coordinate))
+            self.working_data.plot.scatter(x=self.columns[i], y=self.columns[-1])
+
+            plt.plot(x_coordinates[i], y_coordinates[i])
         print(self.working_data)
         print(f"Slope: {self.w}")
 
-        self.working_data.plot.scatter(x=self.columns[0], y=self.columns[-1])
-        plt.plot([x1_coordinate, x2_coordinate],
-                 [y1_coordinate, y2_coordinate])
         plt.show()
 
     def run_trainer(self):
@@ -155,10 +165,10 @@ class LinearRegression:
                 if no_of_iterations % self.ITERATION_SAMPLING_VALUE == 0:
                     print(f"{no_of_iterations}/{self.ITERATIONS_LIMIT} iterations completed")
                     print(self.cost)
-                if prev_cost is not None:
-                    if self.cost < prev_cost:
-                        # plot()
-                        break
+                # if prev_cost is not None:
+                #     if self.cost < prev_cost:
+                #         # plot()
+                #         break
                 elif no_of_iterations == self.ITERATIONS_LIMIT - 1:
                     # plot()
                     pass
