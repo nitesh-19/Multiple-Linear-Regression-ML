@@ -24,6 +24,3 @@ Update documentation.
 <br>
 ![](Plots/Figure_2.png)
 <br>
-![](Plots/Figure_3.png)
-<br>
-![](Plots/Figure_4.png)
